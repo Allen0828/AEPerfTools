@@ -139,3 +139,82 @@ private class AEClassNameView: UIView {
     
     private let nameLa: UILabel = UILabel()
 }
+
+
+/*
+ // 掉帧检测
+ private class AEFrameRateTools {
+     
+     private var displayLink: CADisplayLink?
+     
+     private var frameNumber: Int = 0
+     private var hardwareFramesPerSecond: Int = 0
+     private var recentFrameTimes: CFTimeInterval = CFTimeInterval.init()
+     
+     
+     public func start() {
+         displayLink = CADisplayLink(target: self, selector: #selector(displayLinkWillDraw))
+         displayLink?.add(to: RunLoop.main, forMode: .common)
+         clearLastSecondOfFrameTimes()
+     }
+     public func stop() {
+         displayLink?.invalidate()
+         displayLink = nil
+     }
+     
+     init() {
+         print("AEFrameRateTools-----init")
+         if #available(iOS 13.0, *) {
+             hardwareFramesPerSecond = UIScreen.main.maximumFramesPerSecond
+         } else {
+             // 13以下 都是60帧
+             hardwareFramesPerSecond = 60
+         }
+ //        recentFrameTimes.
+ //        recentFrameTimes = malloc_size(UnsafeRawPointer!)c(sizeof(*_recentFrameTimes) * _hardwareFramesPerSecond);
+         recentFrameTimes = malloc(recentFrameTimes.bitW * hardwareFramesPerSecond)
+     }
+     
+     
+     @objc private func displayLinkWillDraw(link: CADisplayLink) {
+         let current = link.timestamp
+ //        let duration = current - lastFrameTime()
+         recordFrameTime(time: current)
+     }
+     
+     
+     private func clearLastSecondOfFrameTimes() {
+         let time = CACurrentMediaTime()
+         guard var times = recentFrameTimes else { return }
+         for i in 0..<hardwareFramesPerSecond {
+             times[i] = time
+         }
+         recentFrameTimes = times
+         frameNumber = 0
+     }
+     
+     private func lastFrameTime() -> CFTimeInterval {
+         guard let times = recentFrameTimes else { return CFTimeInterval.init() }
+         return times[frameNumber % hardwareFramesPerSecond]
+     }
+     private func recordFrameTime(time: CFTimeInterval) {
+         frameNumber += 1
+         guard var times = recentFrameTimes else { return }
+         times[frameNumber % hardwareFramesPerSecond] = time
+         recentFrameTimes = times
+         
+         
+         print("当前帧率=====\(frameNumber)")
+     }
+ }
+
+ func sizeof<T:FixedWidthInteger>(_ int:T) -> Int {
+     return int.bitWidth/UInt8.bitWidth
+     
+ }
+ func sizeof<T:FixedWidthInteger>(_ intType:T.Type) -> Int {
+     return intType.bitWidth/UInt8.bitWidth
+ }
+
+ 
+ */
