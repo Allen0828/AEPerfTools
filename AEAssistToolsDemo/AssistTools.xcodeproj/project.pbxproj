@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		26A77E81270060F3003313A4 /* AEMutedTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26A77E80270060F3003313A4 /* AEMutedTools.swift */; };
+		26A77E8327006249003313A4 /* detection.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 26A77E8227006249003313A4 /* detection.aiff */; };
+		26A77E87270072D2003313A4 /* Theme.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 26A77E86270072D2003313A4 /* Theme.m4a */; };
 		A832902B25A84C0800E67481 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A832902A25A84C0800E67481 /* AppDelegate.swift */; };
 		A832902D25A84C0800E67481 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A832902C25A84C0800E67481 /* SceneDelegate.swift */; };
 		A832902F25A84C0800E67481 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A832902E25A84C0800E67481 /* ViewController.swift */; };
@@ -17,6 +20,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		26A77E80270060F3003313A4 /* AEMutedTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AEMutedTools.swift; sourceTree = "<group>"; };
+		26A77E8227006249003313A4 /* detection.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = detection.aiff; sourceTree = "<group>"; };
+		26A77E86270072D2003313A4 /* Theme.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Theme.m4a; sourceTree = "<group>"; };
 		A832902725A84C0800E67481 /* AssistTools.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AssistTools.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A832902A25A84C0800E67481 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A832902C25A84C0800E67481 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -39,6 +45,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		26A77E7F270060DF003313A4 /* Muted */ = {
+			isa = PBXGroup;
+			children = (
+				26A77E86270072D2003313A4 /* Theme.m4a */,
+				26A77E8227006249003313A4 /* detection.aiff */,
+				26A77E80270060F3003313A4 /* AEMutedTools.swift */,
+			);
+			path = Muted;
+			sourceTree = "<group>";
+		};
 		A832901E25A84C0800E67481 = {
 			isa = PBXGroup;
 			children = (
@@ -58,6 +74,7 @@
 		A832902925A84C0800E67481 /* AssistTools */ = {
 			isa = PBXGroup;
 			children = (
+				26A77E7F270060DF003313A4 /* Muted */,
 				A832903F25A84C3F00E67481 /* AssistTools */,
 				A832902A25A84C0800E67481 /* AppDelegate.swift */,
 				A832902C25A84C0800E67481 /* SceneDelegate.swift */,
@@ -135,7 +152,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				26A77E87270072D2003313A4 /* Theme.m4a in Resources */,
 				A832903725A84C0B00E67481 /* LaunchScreen.storyboard in Resources */,
+				26A77E8327006249003313A4 /* detection.aiff in Resources */,
 				A832903425A84C0B00E67481 /* Assets.xcassets in Resources */,
 				A832903225A84C0800E67481 /* Main.storyboard in Resources */,
 			);
@@ -149,6 +168,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A832904125A84C5F00E67481 /* AEAssistTools.swift in Sources */,
+				26A77E81270060F3003313A4 /* AEMutedTools.swift in Sources */,
 				A832902F25A84C0800E67481 /* ViewController.swift in Sources */,
 				A832902B25A84C0800E67481 /* AppDelegate.swift in Sources */,
 				A832902D25A84C0800E67481 /* SceneDelegate.swift in Sources */,
@@ -299,6 +319,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D5M8CJ9NDR;
 				INFOPLIST_FILE = AssistTools/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -318,6 +339,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D5M8CJ9NDR;
 				INFOPLIST_FILE = AssistTools/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (

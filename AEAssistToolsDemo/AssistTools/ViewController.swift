@@ -14,6 +14,11 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        AEMutedTools.shared.isMuted { isMuted in
+            print("1111111---\(isMuted)")
+        }
+    }
 
 }
 
