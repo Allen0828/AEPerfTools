@@ -1,10 +1,7 @@
 # AEPerfTools
 
-目标:
-- [x] 1.在页面中提示 当前的类名   完成
+# Preview                                                                       
 
-- [x] 2.监测手机是否处于静音状态   完成
+<view><img src="https://github.com/Allen0828/AEPerfTools/blob/main/imgs/000.png" width="250">
+</view>
 
-- [ ] 3.检测页面是否存在掉帧问题 正在开发
-
-- [ ] 4.检测页面是否循环引用没有释放 待开发
