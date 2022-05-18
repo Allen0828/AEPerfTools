@@ -64,6 +64,20 @@
 - (NSString*)getGPUName;
 - (double)getAppGPU;
 
+
+/* NETWORK*/
+- (BOOL)connectedToWiFi;
+- (BOOL)connectedToCellNetwork;
+- (NSString*)getCurrentIPAddress;
+- (NSString*)getExternalIPAddress;
+- (NSString*)getCellIPAddress;
+- (NSString*)getWiFiIPAddress;
+- (NSString*)getWiFiIPv6Address;
+- (NSString*)getWiFiNetmaskAddress;
+- (NSString*)getWiFiBroadcastAddress;
+
+
+
 @end
 
 

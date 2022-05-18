@@ -12,7 +12,10 @@
 #include <sys/sysctl.h>
 #include <mach-o/arch.h>
 #include <mach/mach.h>
-
+#include <ifaddrs.h>
+#include <arpa/inet.h>
+#include <sys/ioctl.h>
+#include <net/if.h>
 
 #define MEM_PER_MB (1024 * 1024)
 
@@ -448,6 +451,183 @@
         return 0;
     }
     return double(device.currentAllocatedSize / MEM_PER_MB);
+}
+
+
+- (BOOL)connectedToWiFi {
+    NSString *wiFiAddress = [self getWiFiIPAddress];
+    if (wiFiAddress == nil || wiFiAddress.length <= 0) {
+        return false;
+    }
+    return true;
+}
+- (BOOL)connectedToCellNetwork {
+    NSString *cellAddress = [self getCellIPAddress];
+    if (cellAddress == nil || cellAddress.length <= 0) {
+        return false;
+    }
+    return true;
+}
+- (NSString*)getCurrentIPAddress {
+    if ([self connectedToWiFi]) {
+        return [self getWiFiIPAddress];
+    }else if ([self connectedToCellNetwork]) {
+        return [self getCellIPAddress];
+    }
+    return nil;
+}
+- (NSString*)getExternalIPAddress {
+    if (![self connectedToCellNetwork] && ![self connectedToWiFi]) {
+        return nil;
+    }
+    NSError *error = nil;
+    NSString *externalIP = [NSString stringWithContentsOfURL:[NSURL URLWithString:@"https://icanhazip.com/"] encoding:NSUTF8StringEncoding error:&error];
+    
+    if (!error) {
+        externalIP = [externalIP stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        if (externalIP == nil || externalIP.length <= 0) {
+            return nil;
+        }
+        return externalIP;
+    }
+    return nil;
+}
+
+
+- (NSString*)getCellIPAddress {
+    NSString *ipAddress;
+    struct ifaddrs *interfaces;
+    struct ifaddrs *temp;
+    struct sockaddr_in *s4;
+    char buf[64];
+    
+    if (!getifaddrs(&interfaces)) {
+        temp = interfaces;
+        while(temp != NULL) {
+            if(temp->ifa_addr->sa_family == AF_INET) {
+                if([[NSString stringWithUTF8String:temp->ifa_name] isEqualToString:@"pdp_ip0"]) {
+                    s4 = (struct sockaddr_in *)temp->ifa_addr;
+                    if (inet_ntop(temp->ifa_addr->sa_family, (void *)&(s4->sin_addr), buf, sizeof(buf)) == NULL) {
+                        ipAddress = nil;
+                    } else {
+                        ipAddress = [NSString stringWithUTF8String:buf];
+                    }
+                }
+            }
+            temp = temp->ifa_next;
+        }
+    }
+    freeifaddrs(interfaces);
+    if (ipAddress == nil || ipAddress.length <= 0) {
+        return nil;
+    }
+    return ipAddress;
+}
+
+
+- (NSString*)getWiFiIPAddress {
+    NSString *ipAddress;
+    struct ifaddrs *interfaces;
+    struct ifaddrs *temp;
+    int Status = 0;
+    Status = getifaddrs(&interfaces);
+    if (Status == 0) {
+        temp = interfaces;
+        while(temp != NULL) {
+            if(temp->ifa_addr->sa_family == AF_INET) {
+                if([[NSString stringWithUTF8String:temp->ifa_name] isEqualToString:@"en0"]) {
+                    ipAddress = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)temp->ifa_addr)->sin_addr)];
+                }
+            }
+            temp = temp->ifa_next;
+        }
+    }
+    freeifaddrs(interfaces);
+    if (ipAddress == nil || ipAddress.length <= 0) {
+        return nil;
+    }
+    return ipAddress;
+}
+- (NSString*)getWiFiIPv6Address {
+    NSString *ipAddress;
+    struct ifaddrs *interfaces;
+    struct ifaddrs *temp;
+    int status = 0;
+    status = getifaddrs(&interfaces);
+    
+    if (status == 0) {
+        temp = interfaces;
+        while(temp != NULL) {
+            if(temp->ifa_addr->sa_family == AF_INET6) {
+                if([[NSString stringWithUTF8String:temp->ifa_name] isEqualToString:@"en0"]) {
+                    struct sockaddr_in6 *addr6 = (struct sockaddr_in6 *)temp->ifa_addr;
+                    char buf[INET6_ADDRSTRLEN];
+                    if (inet_ntop(AF_INET6, (void *)&(addr6->sin6_addr), buf, sizeof(buf)) == NULL) {
+                        ipAddress = nil;
+                    } else {
+                        ipAddress = [NSString stringWithUTF8String:buf];
+                    }
+                }
+            }
+            temp = temp->ifa_next;
+        }
+    }
+    freeifaddrs(interfaces);
+    if (ipAddress == nil || ipAddress.length <= 0) {
+        return nil;
+    }
+    return ipAddress;
+}
+- (NSString*)getWiFiNetmaskAddress {
+    struct ifreq afr;
+    strncpy(afr.ifr_name, [@"en0" UTF8String], IFNAMSIZ-1);
+    int afd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (afd == -1) {
+        return nil;
+    }
+    if (ioctl(afd, SIOCGIFNETMASK, &afr) == -1) {
+        close(afd);
+        return nil;
+    }
+    close(afd);
+    
+    char *netstring = inet_ntoa(((struct sockaddr_in *)&afr.ifr_addr)->sin_addr);
+    NSString *netmask = [NSString stringWithUTF8String:netstring];
+    if (netmask == nil || netmask.length <= 0) {
+        return nil;
+    }
+    return netmask;
+}
+- (NSString*)getWiFiBroadcastAddress {
+    NSString *ipAddress = [self getWiFiIPAddress];
+    NSString *nmAddress = [self getWiFiNetmaskAddress];
+    
+    if (ipAddress == nil || ipAddress.length <= 0) {
+        return nil;
+    }
+    if (nmAddress == nil || nmAddress.length <= 0) {
+        return nil;
+    }
+    NSArray *ipCheck = [ipAddress componentsSeparatedByString:@"."];
+    NSArray *nmCheck = [nmAddress componentsSeparatedByString:@"."];
+    if (ipCheck.count != 4 || nmCheck.count != 4) {
+        return nil;
+    }
+    NSUInteger ip = 0;
+    NSUInteger nm = 0;
+    NSUInteger cs = 24;
+    
+    for (NSUInteger i = 0; i < 4; i++, cs -= 8) {
+        ip |= [[ipCheck objectAtIndex:i] intValue] << cs;
+        nm |= [[nmCheck objectAtIndex:i] intValue] << cs;
+    }
+    NSUInteger ba = ~nm | ip;
+    NSString *broadcastAddress = [NSString stringWithFormat:@"%lu.%lu.%lu.%lu", (long)(ba & 0xFF000000) >> 24, (long)(ba & 0x00FF0000) >> 16, (long)(ba & 0x0000FF00) >> 8, (long)(ba & 0x000000FF)];
+    
+    if (broadcastAddress == nil || broadcastAddress.length <= 0) {
+        return nil;
+    }
+    return broadcastAddress;
 }
 
 

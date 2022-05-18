@@ -32,7 +32,7 @@
 - (void)update {
     AEPerfTools *shared = [AEPerfTools shared];
     
-    NSString *msg = [NSString stringWithFormat:@"基本信息\nname=%@, model=%@, localizedModel=%@, systemname=%@, SystemVersion=%@, 设备朝向=%lu, uuid=%@, Country=%@, Language=%@ \n\n电池\n当前电量=%.2f, 电池状态=%lu \n\nCPU\nname=%@, type=%@, coreNum=%d, 主频率=%d, \n当前设备CPU总使用=%.2f%%, \napp使用cpu=%.2f%%, \ncpus=%@, \n\n内存\n设备总内存=%.2fMB, app使用内存=%.2fMB, 空闲内存=%.2fMB, 已使用内存=%.2fMB, 活跃内存=%.2fMB, 不活跃内存=%.2fMB \n\n磁盘\n设备总容量=%.2fGB, 已使用==%.2fGB, 未使用==%.2fGB\n\nGPU\nname=%@, 当前使用=%.2f%%",
+    NSString *msg = [NSString stringWithFormat:@"基本信息\nname=%@, model=%@, localizedModel=%@, systemname=%@, SystemVersion=%@, 设备朝向=%lu, uuid=%@, Country=%@, Language=%@ \n\n电池\n当前电量=%.2f, 电池状态=%lu \n\nCPU\nname=%@, type=%@, coreNum=%d, 主频率=%d, \n当前设备CPU总使用=%.2f%%, \napp使用cpu=%.2f%%, \ncpus=%@, \n\n内存\n设备总内存=%.2fMB, app使用内存=%.2fMB, 空闲内存=%.2fMB, 已使用内存=%.2fMB, 活跃内存=%.2fMB, 不活跃内存=%.2fMB \n\n磁盘\n设备总容量=%.2fGB, 已使用==%.2fGB, 未使用==%.2fGB\n\nGPU\nname=%@, 当前使用=%.2f%%\n网络\n当前ip=%@",
                      [shared getDeviceName],
                      [shared getDeviceModel],
                      [shared getDeviceLocalizedModel],
@@ -66,7 +66,9 @@
                      [shared getFreeDisk:false],
                      
                      [shared getGPUName],
-                     [shared getAppGPU]
+                     [shared getAppGPU],
+                     
+                     [shared getCurrentIPAddress]
     ];
 
     
