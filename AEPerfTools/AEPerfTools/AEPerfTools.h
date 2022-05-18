@@ -24,6 +24,7 @@
 - (NSString*)getDeviceUUID;
 - (NSString *)getCountry;
 - (NSString *)getLanguage;
+- (CGFloat)getScreenBrightness;
 
 /* 电池*/
 // 范围 0-1 百分比
@@ -62,7 +63,7 @@
 
 /* GPU MB*/ 
 - (NSString*)getGPUName;
-- (double)getAppGPU;
+- (double)getAppGPUUasge;
 
 
 /* NETWORK*/

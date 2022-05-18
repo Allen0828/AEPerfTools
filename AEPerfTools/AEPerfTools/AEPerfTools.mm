@@ -40,6 +40,7 @@
 }
 - (void)config {
     _device = [UIDevice currentDevice];
+    _device.batteryMonitoringEnabled = true;
 }
 
 - (NSString*)getDeviceName {
@@ -79,15 +80,19 @@
     }
     return language;
 }
+- (CGFloat)getScreenBrightness {
+    CGFloat brightness = [UIScreen mainScreen].brightness;
+    if (brightness < 0.0 || brightness > 1.0) {
+        return -1;
+    }
+    return brightness;
+}
 
 
 - (CGFloat)getBatteryLevel {
     return _device.batteryLevel;
 }
 - (UIDeviceBatteryState)getBatteryState {
-    if (!_device.batteryMonitoringEnabled) {
-        _device.batteryMonitoringEnabled = true;
-    }
     return _device.batteryState;
 }
 
@@ -445,7 +450,7 @@
     }
     return device.name;
 }
-- (double)getAppGPU {
+- (double)getAppGPUUasge {
     id<MTLDevice> device = MTLCreateSystemDefaultDevice();
     if(!device) {
         return 0;

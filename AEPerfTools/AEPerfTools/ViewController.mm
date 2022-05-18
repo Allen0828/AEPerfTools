@@ -66,7 +66,7 @@
                      [shared getFreeDisk:false],
                      
                      [shared getGPUName],
-                     [shared getAppGPU],
+                     [shared getAppGPUUasge],
                      
                      [shared getCurrentIPAddress]
     ];
